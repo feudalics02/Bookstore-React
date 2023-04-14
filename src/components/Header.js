@@ -1,13 +1,24 @@
 import "../header.css"
+import React from "react";
 
-export default function Header() {
+export default function Header({search}) {
+    const [text, setText] = React.useState("");
+
+    const categories = ["Crime", "Fantasy", "Horror", "Adventure", "Romance", "Humour", "Biography", "History", "Sports"];
+    const dropdown = categories.map(category => <div id={category.toLowerCase()}>{category}</div>);
+
+    function handleChange(event) {
+        const {value} = event.target;
+        setText(value);
+    }
+
     return (
             <div className="bar">
                 <div className="name">BookStore</div>
 
                 <div className="search-bar">
-                    <input className="input" type="text" placeholder="Search"></input>
-                    <i className="material-symbols-outlined" id="search-button">search</i>
+                    <input className="input" type="text" placeholder="Search" value={text} onChange={handleChange}></input>
+                    <i className="material-symbols-outlined" id="search-button" onClick={() => search(text)}>search</i>
                 </div>
 
                 <div className="buttons">
@@ -16,15 +27,7 @@ export default function Header() {
                     <button id="browse">Browse
                         <span className="material-symbols-outlined" id="arrow-drop-down">arrow_drop_down</span>
                         <div className="dropdown-content">
-                            <div id="crime">Crime</div>
-                            <div>Fantasy</div>
-                            <div>Horror</div>
-                            <div>Adventure</div>
-                            <div>Romance</div>
-                            <div>Humour</div>
-                            <div>Biography</div>
-                            <div>History</div>
-                            <div id="sports">Sports</div>
+                            {dropdown}
                         </div>
                     </button>
                 </div>
