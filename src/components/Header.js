@@ -1,11 +1,12 @@
-import "../header.css"
+import "../stylesheets/header.css"
 import React from "react";
 
-export default function Header({search, clearBooks, searchSubject}) {
+export default function Header({search, clearBooks, searchSubject, getWishlist}) {
     const [text, setText] = React.useState("");
 
+    let key = 1;
     const categories = ["Fiction", "History", "Biography", "Religion", "Psychology", "Science", "Education", "Philosophy"];
-    const dropdown = categories.map(category => <div id={category.toLowerCase()} onClick={() => searchSubject(category)}>{category}</div>);
+    const dropdown = categories.map(category => <div id={category.toLowerCase()} key={key++} onClick={() => searchSubject(category)}>{category}</div>);
 
     function handleChange(event) {
         const {value} = event.target;
@@ -29,7 +30,7 @@ export default function Header({search, clearBooks, searchSubject}) {
 
                 <div className="buttons">
                     <button onClick={clearBooks}>Home</button>
-                    <button>Wishlist</button>
+                    <button onClick={getWishlist}>Wishlist</button>
                     <button id="browse">Browse
                         <span className="material-symbols-outlined" id="arrow-drop-down">arrow_drop_down</span>
                         <div className="dropdown-content">

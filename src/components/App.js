@@ -1,11 +1,11 @@
-import '../App.css';
+import '../stylesheets/App.css';
 import Header from "./Header";
 import BookList from "./BookList";
 import React from "react";
 
 function App() {
     const [books, setBooks] = React.useState([]);
-    const [wishlist, setWishlist] = React.useState(JSON.parse(localStorage.getItem("wishlist")) || {});
+    const wishlist = JSON.parse(localStorage.getItem("wishlist") || {});
     const apiKey = "AIzaSyAEt2T83GMPhE_WG-p08skp8BFwRJIJQSA";
 
     function fetchData(term) {
@@ -28,28 +28,27 @@ function App() {
             });
     }
 
+    function getWishlist() {
+        let array = [];
+        let promises = [];
+
+        for (let isbn in wishlist) {
+            let promise = fetch(`https://www.googleapis.com/books/v1/volumes?q=isbn:${isbn}&key=${apiKey}`)
+                .then(data => data.json())
+                .then(book => array.push(book.items[0]));
+            promises.push(promise);
+        }
+
+        Promise.all(promises).then(() => setBooks(array));
+    }
+
     function setFavorite(isbn) {
-        console.log(wishlist);
-        setWishlist(prevState => {
-            if (prevState.hasOwnProperty(isbn)) {
-                delete prevState[isbn];
-            }
-            prevState[isbn] = true;
-            return prevState;
-        });
-        console.log(wishlist);
+        wishlist[isbn] = true;
         localStorage.setItem("wishlist", JSON.stringify(wishlist));
     }
 
     function removeFavorite(isbn) {
-        console.log(wishlist);
-        setWishlist(prevState => {
-            if (prevState.hasOwnProperty(isbn)) {
-                delete prevState[isbn];
-            }
-            return prevState;
-        });
-        console.log(wishlist);
+        delete wishlist[isbn];
         localStorage.setItem("wishlist", JSON.stringify(wishlist));
     }
 
@@ -59,7 +58,7 @@ function App() {
 
     return (
         <div className="App">
-          <Header search={fetchData} searchSubject={fetchSubject} clearBooks={clearBooks}/>
+          <Header search={fetchData} searchSubject={fetchSubject} clearBooks={clearBooks} getWishlist={getWishlist}/>
           <BookList items={books} setFavorite={setFavorite} removeFavorite={removeFavorite}/>
         </div>
     );

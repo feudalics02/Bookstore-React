@@ -1,6 +1,6 @@
 import Book from "./Book";
 import React from "react";
-import "../book.css"
+import "../stylesheets/book.css"
 import Modal from "./Modal";
 
 export default function BookList({items, setFavorite, removeFavorite}) {

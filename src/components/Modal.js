@@ -1,5 +1,5 @@
 import React from "react";
-import "../book.css"
+import "../stylesheets/modal.css"
 
 export default function Modal(props) {
     return (

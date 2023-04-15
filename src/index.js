@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './book.css';
+import './stylesheets/book.css';
 import App from './components/App';
 import reportWebVitals from './files/reportWebVitals';
 

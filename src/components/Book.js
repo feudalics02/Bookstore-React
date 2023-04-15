@@ -1,10 +1,9 @@
 import 'material-symbols'
 import React from "react";
-import "../book.css"
+import "../stylesheets/book.css"
 
 export default function Book(props) {
-    const wishlist = JSON.parse(localStorage.getItem("wishlist") || {});
-    const [favorite, toggleFavorite] = React.useState(wishlist.hasOwnProperty(props.isbn));
+    const [, setRender] = React.useState(false);
 
     const nonActiveStyle =
         "'FILL' 0,\n" +
@@ -19,29 +18,28 @@ export default function Book(props) {
         "'opsz' 48";
 
     function handleClick() {
-        console.log(favorite);
-        if (favorite) {
+        if (wishlist[props.isbn]) {
             props.removeFavorite(props.isbn);
         }
         else {
             props.setFavorite(props.isbn);
         }
-        toggleFavorite(prevState => !prevState);
-        console.log(favorite);
+        setRender(prevState => !prevState);
     }
 
     function goToLink() {
         window.open(props.link, "_blank");
     }
 
+    const wishlist = JSON.parse(localStorage.getItem("wishlist"));
     return (
         <div className="book">
             <span className="material-symbols-sharp" id="favorite"
-                  style={{fontVariationSettings: favorite ? activeStyle : nonActiveStyle, color: favorite ? "crimson" : "black"}}
+                  style={{fontVariationSettings: wishlist[props.isbn] ? activeStyle : nonActiveStyle, color: wishlist[props.isbn] ? "crimson" : "black"}}
                   onClick={handleClick}>favorite</span>
             <span className="material-symbols-outlined" id="info" onClick={() => props.openModal({"id": props.id, "title": props.title, "description": props.description})}>info</span>
             <div className="wrap">
-                <img className="image" src={props.image} alt=""></img>
+                <img className="image" onClick={() => console.log(props.isbn)} src={props.image} alt=""></img>
             </div>
             <label className="author">{props.author}</label>
             <label className="title">{props.title}</label>
