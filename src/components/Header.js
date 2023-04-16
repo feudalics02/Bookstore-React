@@ -1,8 +1,8 @@
 import "../stylesheets/header.css"
-import React from "react";
+import React, { useState } from "react";
 
 export default function Header({search, clearBooks, searchSubject, getWishlist}) {
-    const [text, setText] = React.useState("");
+    const [text, setText] = useState("");
 
     let key = 1;
     const categories = ["Fiction", "History", "Biography", "Religion", "Psychology", "Science", "Education", "Philosophy"];

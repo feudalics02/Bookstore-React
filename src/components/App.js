@@ -1,14 +1,16 @@
 import '../stylesheets/App.css';
 import Header from "./Header";
 import BookList from "./BookList";
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 function App() {
-    const [books, setBooks] = React.useState([]);
+    const [books, setBooks] = useState([]);
+    const [term, setTerm] = useState("");
+    const [subject, setSubject] = useState("");
     const wishlist = JSON.parse(localStorage.getItem("wishlist") || {});
-    const apiKey = "AIzaSyAEt2T83GMPhE_WG-p08skp8BFwRJIJQSA";
+    const apiKey = "";
 
-    function fetchData(term) {
+    useEffect(() => {
         fetch(`https://www.googleapis.com/books/v1/volumes?q=${term}+intitle:${term}&printType=books&filter=paid-ebooks&orderBy=relevance&maxResults=36&key=${apiKey}&langRestrict=en`)
             .then(data => data.json())
             .then(books => {
@@ -16,9 +18,9 @@ function App() {
                     setBooks(books.items);
                 }
             });
-    }
+    }, [term]);
 
-    function fetchSubject(subject) {
+    useEffect(() => {
         fetch(`https://www.googleapis.com/books/v1/volumes?q=subject:${subject}&printType=books&filter=paid-ebooks&orderBy=relevance&maxResults=36&key=${apiKey}&langRestrict=en`)
             .then(data => data.json())
             .then(books => {
@@ -26,6 +28,14 @@ function App() {
                     setBooks(books.items);
                 }
             });
+    }, [subject]);
+
+    function changeTerm(term) {
+        setTerm(term);
+    }
+
+    function changeSubject(subject) {
+        setSubject(subject);
     }
 
     function getWishlist() {
@@ -58,7 +68,7 @@ function App() {
 
     return (
         <div className="App">
-          <Header search={fetchData} searchSubject={fetchSubject} clearBooks={clearBooks} getWishlist={getWishlist}/>
+          <Header search={changeTerm} searchSubject={changeSubject} clearBooks={clearBooks} getWishlist={getWishlist}/>
           <BookList items={books} setFavorite={setFavorite} removeFavorite={removeFavorite}/>
         </div>
     );

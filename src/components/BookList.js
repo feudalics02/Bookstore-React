@@ -1,11 +1,11 @@
 import Book from "./Book";
-import React from "react";
+import React, { useState } from "react";
 import "../stylesheets/book.css"
 import Modal from "./Modal";
 
 export default function BookList({items, setFavorite, removeFavorite}) {
-    const [show, setShow] = React.useState(false);
-    const [modal, setModal] = React.useState({"id": -1, "title": "", "description": ""});
+    const [show, setShow] = useState(false);
+    const [modal, setModal] = useState({"id": -1, "title": "", "description": ""});
 
     let key = 1;
     const newArray = [];
